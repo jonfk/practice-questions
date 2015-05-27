@@ -5,6 +5,12 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
+/*
+Given a binary search tree where there may contain
+duplicates, but all other logic of the BST is intact,
+determine the most frequently occurring element.
+*/
+
 type Tree struct {
 	Left  *Tree
 	Value int
@@ -55,16 +61,37 @@ func (q *TreeQueue) dequeue() *Tree {
 
 func main() {
 	/*
-	   4
-	   2   6
-	   13  56
+	      4
+	    2    6
+	   1 3  5 6
 	*/
-	bst := sortedArrayToBST([]int{1, 2, 3, 4, 5, 6, 6})
+	bst := sortedArrayToBST([]int{1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 12, 12, 12, 13, 14})
 	spew.Printf("%#v\n", bst)
 
-	fmt.Printf("%v\n", DFS(bst))
-	fmt.Printf("%v\n", DFSStack(bst))
-	fmt.Printf("%v\n", inOrderTraversal(bst))
+	fmt.Printf("%v\n", mostFrequent(bst))
+}
+
+func mostFrequent(a *Tree) int {
+	var freq map[int]int = make(map[int]int)
+	stack := new(TreeStack)
+	stack.Push(a)
+	for len(stack.Value) > 0 {
+		popped := stack.Pop()
+
+		if popped != nil {
+			freq[popped.Value] = freq[popped.Value] + 1
+			stack.Push(popped.Right)
+			stack.Push(popped.Left)
+		}
+	}
+	maxKey, maxValue := 0, 0
+	for key, value := range freq {
+		if value > maxValue {
+			maxKey = key
+			maxValue = value
+		}
+	}
+	return maxKey
 }
 
 func DFS(a *Tree) []int {

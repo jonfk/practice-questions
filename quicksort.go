@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 func main() {
@@ -16,6 +17,11 @@ func qsort(a []int) []int {
 		return a
 	}
 	lo, hi := 0, len(a)-1
+
+	// choose pivot
+	pivot := rand.Int() % (len(a))
+
+	a[pivot], a[hi] = a[hi], a[pivot]
 
 	for i := range a {
 		if a[i] < a[hi] {

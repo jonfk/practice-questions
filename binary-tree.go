@@ -65,6 +65,12 @@ func main() {
 	fmt.Printf("%v\n", DFS(bst))
 	fmt.Printf("%v\n", DFSStack(bst))
 	fmt.Printf("%v\n", inOrderTraversal(bst))
+
+	//validate
+	fmt.Println("\nValidation")
+	fmt.Printf("True: %v\n", validate(bst))
+	falseBST := sortedArrayToBST([]int{7, 8, 7, 95, 4, 6, 7, 1})
+	fmt.Printf("False: %v\n", validate(falseBST))
 }
 
 func DFS(a *Tree) []int {
@@ -126,4 +132,26 @@ func sortedArrayToBST(a []int) *Tree {
 	left := sortedArrayToBST(a[:mid])
 	right := sortedArrayToBST(a[mid+1:])
 	return &Tree{Left: left, Value: a[mid], Right: right}
+}
+
+/*
+Given a binary tree, determine if it is a valid binary search tree (BST).
+
+Assume a BST is defined as follows:
+  - The left subtree of a node contains only nodes with keys less than the node's key.
+  - The right subtree of a node contains only nodes with keys greater than the node's key.
+  - Both the left and right subtrees must also be binary search trees.
+*/
+
+func validate(a *Tree) bool {
+	if a == nil {
+		return true
+	}
+
+	val := a.Value
+	if (a.Left != nil && val < a.Left.Value) || (a.Right != nil && val > a.Right.Value) {
+		return false
+	} else {
+		return validate(a.Left) && validate(a.Right)
+	}
 }

@@ -62,10 +62,9 @@ func main() {
 
 	spew.Dump(graph)
 
-	//found := BFS(graph, 6)
-	found := DFS(x1, 5)
-	fmt.Println("found")
-	spew.Dump(found)
+	path := IsConnected(graph, x1, &Node{Value: 10})
+	fmt.Printf("\nisPath: %v\n", path)
+	//spew.Dump(found)
 }
 
 type Queue struct {
@@ -95,11 +94,10 @@ func (a *Queue) IsEmpty() bool {
 	return true
 }
 
-func BFS(g *Graph, searching int) *Node {
+func BFS(g *Graph, root *Node, searching int) *Node {
 	for i := range g.Nodes {
 		g.Nodes[i].Visited = false
 	}
-	root := g.Nodes[0]
 	queue := &Queue{}
 	err := queue.Enqueue(root)
 	if err != nil {
@@ -127,23 +125,10 @@ func BFS(g *Graph, searching int) *Node {
 	return nil
 }
 
-// recursive
-func DFS(root *Node, searching int) *Node {
-	if root.Visited {
-		return nil
-	} else {
-		if root.Value == searching {
-			return root
-		}
-		root.Visited = true
-		for i := range root.Adjacent {
-			found := DFS(root.Adjacent[i], searching)
-			if found != nil {
-				return found
-			}
-		}
-		return nil
+func IsConnected(graph *Graph, start, end *Node) bool {
+	found := BFS(graph, start, end.Value)
+	if found == nil {
+		return false
 	}
+	return true
 }
-
-// stack-based

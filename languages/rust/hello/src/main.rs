@@ -1,5 +1,8 @@
 
 fn main() {
-    let a : Option<_>= (1..10).map(|x| x + 1).collect();
-    assert_eq!(a, vec![2,3,4,5,6,7,8,9,10]);
+    let mut vec = vec![1, 2, 3];
+    let i : u64 = 0;
+    //assert_eq!(vec.pop(), Some(3));
+    //assert_eq!(vec, [1, 2]);
+    assert_eq!(vec[i], 1);
 }
